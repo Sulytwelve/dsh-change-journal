@@ -62,7 +62,9 @@ excluded from query results. The next append begins after a clean newline. No hi
 ## Upgrade
 
 ```sh
-dsh plugin --profile web add github:Sulytwelve/dsh-change-journal#v0.x.y
+# DSH has no in-place update: remove, add the new tag, then restart.
+dsh plugin --profile web remove @sulytwelve/dsh-change-journal
+dsh plugin --profile web add github:Sulytwelve/dsh-change-journal#v0.1.1
 # restart the DSH process that serves the profile
 ```
 

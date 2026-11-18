@@ -147,8 +147,15 @@ Three install paths, in preference order:
 2. **GitHub tag** — `dsh plugin --profile web add github:Sulytwelve/dsh-change-journal#vX.Y.Z` (pin the tag).
 3. **Release tarball URL** — `dsh plugin --profile web add https://github.com/Sulytwelve/dsh-change-journal/releases/download/vX.Y.Z/sulytwelve-dsh-change-journal.tgz`.
 
-Until npm publishing is enabled, upgrade with a new pinned tag; the installed Host process still
-needs the usual restart to load new JavaScript.
+**Upgrading:** DSH currently has no in-place update operation. Remove the bundle, add the new pinned
+tag, then restart the process that serves the profile:
+
+```sh
+dsh plugin --profile web remove @sulytwelve/dsh-change-journal
+dsh plugin --profile web add github:Sulytwelve/dsh-change-journal#v0.1.1
+```
+
+Until npm publishing is enabled, use the GitHub tag or the release tarball spec after the remove.
 ## License
 
 MIT — see [LICENSE](LICENSE). Sample outputs: [docs/SAMPLES.md](docs/SAMPLES.md).
