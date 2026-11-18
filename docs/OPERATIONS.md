@@ -62,10 +62,10 @@ excluded from query results. The next append begins after a clean newline. No hi
 ## Upgrade
 
 ```sh
-# DSH has no in-place update: remove, add the new tag, then restart.
+# HMR hot-updates code inside an installed plugin, but DSH does not overwrite an installed package:
 dsh plugin --profile web remove @sulytwelve/dsh-change-journal
 dsh plugin --profile web add github:Sulytwelve/dsh-change-journal#v0.1.1
-# restart the DSH process that serves the profile
+# restart the DSH process that serves the profile if the new module generation is not hot-loaded
 ```
 
 Events are versioned (`schema`, `journalVersion`); mixed versions remain readable.
@@ -74,7 +74,7 @@ Events are versioned (`schema`, `journalVersion`); mixed versions remain readabl
 
 ```sh
 dsh plugin --profile web remove @sulytwelve/dsh-change-journal
-# restart the DSH process that serves the profile
+# restart the DSH process that serves the profile if the new module generation is not hot-loaded
 rm -rf ~/.local/state/dsh-change-journal   # optional
 ```
 
