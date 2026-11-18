@@ -8,6 +8,7 @@ import {
   checkRollback, getOperation, todayOperations, unverifiedOperations,
 } from '../lib/ops.mjs'
 import { sha256Text } from '../lib/util.mjs'
+import { todayText } from '../lib/format.mjs'
 
 const actor = { sessionId: 's1', source: 'test' }
 
@@ -103,6 +104,34 @@ test('an unknown operation is rejected before any event is written', async () =>
     /unknown operation/,
   )
   assert.equal(store.readEvents().events.length, 0)
+})
+
+test('a verification output with literal backslash-n is stored as-is with a warning', async () => {
+  const { config, store } = makeStore()
+  const opened = await openOperation({ store, target: '/tmp/x', intent: 'edit', actor, nowMs: Date.now() })
+  await recordMutation({ store, opId: opened.opId, delta: 'edit', post: 'v2', actor, nowMs: Date.now() })
+  const result = await recordVerification({
+    store, config, opId: opened.opId, command: 'check', exitCode: 0,
+    output: 'line one\\nline two', actor, nowMs: Date.now(),
+  })
+  assert.equal(result.outputLooksEscaped, true)
+  assert.match(result.text, /literal \\n/)
+  const operation = getOperation(store, opened.opId).operation
+  assert.equal(operation.verifications[0].output, 'line one\\nline two')
+})
+
+test('today lists each passive observation with enough detail to decide on an operation', async () => {
+  const { store } = makeStore()
+  store.appendEvent({
+    opId: 'passive', type: 'observation', atMs: Date.now(),
+    actor: { tool: 'fs', source: 'passive' },
+    data: { displayPath: '/tmp/example.txt', kind: 'present', version: 'v7', attribution: 'unattributed' },
+  })
+  const today = todayOperations({ store, timezone: 'UTC', nowMs: Date.now() })
+  const text = todayText(today)
+  assert.match(text, /unattributed observations/)
+  assert.match(text, /fs · \/tmp\/example\.txt · present · version v7/)
+  assert.match(text, /change open/)
 })
 
 test('today filters by the requested time zone', async () => {

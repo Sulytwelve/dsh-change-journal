@@ -34,6 +34,13 @@ lists every operation whose last mutation has no successful applicable check. `b
 (remote or unreadable), `check-failed`, and `interrupted` (mutation without post state) stay
 distinguishable.
 
+Two small guards for the operator:
+
+- If a verification's `output` contains literal `\n` sequences and no real newlines, it is stored as
+  supplied with a warning and `outputLooksEscaped: true`; pass real newlines or `--output FILE`.
+- `today` lists each passive observation (time, observing tool, target, state/version) instead of
+  only a count, and points at `change open` when a reported change deserves full coverage.
+
 ## Storage
 
 - `~/.local/state/dsh-change-journal/journal/YYYY-MM.jsonl` — one UTF-8 JSON event per line,
@@ -52,7 +59,7 @@ distinguishable.
 
 | Query | Answer |
 |---|---|
-| `today` | operations with activity today in the requested IANA zone (default: host zone) |
+| `today` | operations with activity today in the requested IANA zone (default: host zone), plus each passive observation named explicitly |
 | `op <id>` | every attempt, the failing/passing verification output, backup state, rollback recipe |
 | `unverified` | operations whose last mutation has no successful check |
 | `export` | all events as JSONL + `.sha256` + manifest, for migration or a quota-pressure handoff |
@@ -98,7 +105,7 @@ holds an unresolved operation's evidence, and a later change invalidates an earl
 ## Tests
 
 ```sh
-npm test   # 6 files, 27 assertions, no dependencies
+npm test   # 6 files, 29 assertions, no dependencies
 ```
 
 Covers the packaged acceptance fixture (file edit, verified backup, failing check, corrected edit,
@@ -108,7 +115,7 @@ unresolved operations, time-zone day filtering, passive observations, the tool s
 export/doctor/smoke. Clean install path:
 
 ```sh
-mkdir /tmp/dsh-journal && tar -xzf sulytwelve-dsh-change-journal-0.1.0.tgz -C /tmp/dsh-journal
+mkdir /tmp/dsh-journal && tar -xzf sulytwelve-dsh-change-journal-0.1.1.tgz -C /tmp/dsh-journal
 cd /tmp/dsh-journal/package && node test/*.mjs
 ```
 
@@ -131,6 +138,17 @@ dsh plugin --profile web remove @sulytwelve/dsh-change-journal
 rm -rf ~/.local/state/dsh-change-journal   # optional: discard the journal
 ```
 
+## Distribution
+
+Three install paths, in preference order:
+
+1. **npm** — the repository carries a tag-triggered publish workflow; once the `NPM_TOKEN` secret is
+   configured, a tagged release publishes to the registry and installs as a normal package.
+2. **GitHub tag** — `dsh plugin --profile web add github:Sulytwelve/dsh-change-journal#vX.Y.Z` (pin the tag).
+3. **Release tarball URL** — `dsh plugin --profile web add https://github.com/Sulytwelve/dsh-change-journal/releases/download/vX.Y.Z/sulytwelve-dsh-change-journal.tgz`.
+
+Until npm publishing is enabled, upgrade with a new pinned tag; the installed Host process still
+needs the usual restart to load new JavaScript.
 ## License
 
 MIT — see [LICENSE](LICENSE). Sample outputs: [docs/SAMPLES.md](docs/SAMPLES.md).

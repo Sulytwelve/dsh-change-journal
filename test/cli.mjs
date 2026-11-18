@@ -102,6 +102,6 @@ test('doctor, smoke and version run', () => {
   assert.equal(smoke.status, 0, smoke.stderr)
   assert.match(smoke.stdout, /state     verified/)
   const version = run(['version'], stateDir)
-  assert.match(version.stdout, /dsh-change-journal 0\.1\.0/)
+  assert.match(version.stdout, /dsh-change-journal 0\.1\.1/)
   fs.rmSync(stateDir, { recursive: true, force: true })
 })

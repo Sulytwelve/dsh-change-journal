@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.1 — 2026-11-18
+
+### Changed
+
+- `verify` now warns when the supplied output contains literal `\n` sequences and no real newlines
+  (a common shell-quoting mistake). The text is stored as given; the event records
+  `outputLooksEscaped: true` and the CLI/tool text carries the reminder to use real newlines or
+  `--output FILE`.
+- `today` now lists each passive observation with time, observing tool, target, state/version and
+  attribution, and says explicitly that opening an operation is how a reported change gains
+  backup/verify/rollback coverage. Previously it only reported a count.
+- Distribution: added a tag-triggered npm publish workflow (`.github/workflows/publish.yml`).
+
 ## 0.1.0 — 2026-11-18
 
 First release. Append-only change journal for DSH 0.2.2-rc.3, profile `web`.

@@ -22,11 +22,23 @@ the verified backup and the rollback command and precondition.
 ## `today`
 
 ```
-change journal · 2026-11-18 (Asia/Singapore) · 2 operation(s), 1 passive observation(s)
+change journal · 2026-11-18 (Asia/Singapore) · 2 operation(s), 2 passive observation(s)
 09:29:55 · op-tooc5v-wc9gxf · verified · /tmp/target.txt · smoke: append a line
 10:02:10 · op-tooc7g-q0l8d6 · mutated · /srv/app/config.yml · raise the timeout
-unattributed observations: 1 (see op output or --json; never auto-linked)
+unattributed observations (recorded by passive fs/observed; never auto-linked):
+  09:41:12 · fs · /srv/app/config.yml · present · version v7
+  09:41:30 · fs · /srv/app/backup/config.yml · absent
+if one of these changes matters, open an operation with `change open` so it gets backup/verify/rollback coverage.
 ```
+
+## `verify` with literal `\n` in the output
+
+```
+verification for op-tooc7g-q0l8d6: exit 1 · line one\nline two · warning: the output contains literal \n, not real newlines; pass real newlines or use --output FILE
+```
+
+The text is stored as supplied; the warning is also recorded as `outputLooksEscaped: true` on the
+event so a later reader can tell it apart from a multi-line output.
 
 ## `unverified`
 
