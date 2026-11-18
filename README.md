@@ -142,8 +142,7 @@ rm -rf ~/.local/state/dsh-change-journal   # optional: discard the journal
 
 Three install paths, in preference order:
 
-1. **npm** — the repository carries a tag-triggered publish workflow; once the `NPM_TOKEN` secret is
-   configured, a tagged release publishes to the registry and installs as a normal package.
+1. **npm** — the package is published manually: pm stage publish from the tagged tree, then approve the staged version on npmjs.com. The account uses passkey 2FA, so a token-driven publish workflow is not used.
 2. **GitHub tag** — `dsh plugin --profile web add github:Sulytwelve/dsh-change-journal#vX.Y.Z` (pin the tag).
 3. **Release tarball URL** — `dsh plugin --profile web add https://github.com/Sulytwelve/dsh-change-journal/releases/download/vX.Y.Z/sulytwelve-dsh-change-journal.tgz`.
 4. **codeload tarball** — when git fetches or GitHub release downloads are blocked, `dsh plugin --profile web add https://codeload.github.com/Sulytwelve/dsh-change-journal/tar.gz/refs/tags/vX.Y.Z` installs the tagged tree directly (the spec shape already used for the context-manager on this host).
