@@ -1,0 +1,61 @@
+{
+  "name": "@sulytwelve/dsh-change-journal",
+  "version": "0.1.0",
+  "description": "Append-only change journal for DeepSeek Harness: an explicit operation id carries intent, backup, mutation, verification and a rollback recipe; queries answer today, one operation, and what is still unverified.",
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "dsh-bundle",
+    "deepseek-harness",
+    "change-journal",
+    "audit",
+    "rollback"
+  ],
+  "license": "MIT",
+  "author": "Sulytwelve",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sulytwelve/dsh-change-journal.git"
+  },
+  "homepage": "https://github.com/Sulytwelve/dsh-change-journal#readme",
+  "bugs": {
+    "url": "https://github.com/Sulytwelve/dsh-change-journal/issues"
+  },
+  "type": "module",
+  "exports": {
+    ".": "./index.js",
+    "./locale/*.json": "./locale/*.json",
+    "./icon": "./icon.svg",
+    "./package.json": "./package.json"
+  },
+  "bin": {
+    "dsh-change-journal": "./bin/cli.mjs"
+  },
+  "files": [
+    "index.js",
+    "lib",
+    "bin",
+    "test",
+    "docs",
+    "locale",
+    "cordis.patch.yml",
+    "icon.svg",
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "node test/store.mjs && node test/derive.mjs && node test/ops.mjs && node test/tool.mjs && node test/cli.mjs && node test/passive.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    }
+  }
+}

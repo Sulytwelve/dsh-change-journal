@@ -1,0 +1,12 @@
+# Change journal — observational, append-only, explicitly operated.
+#
+# The tool records what the caller reports; it grants no execution authority and
+# intercepts no approval. Numbers below are calibrate-required; see README.md.
+- insert:
+    - id: change-journal
+      name: '@sulytwelve/dsh-change-journal'
+      config:
+        enabled: true
+        passive: true
+        retentionDays: 90
+        quotaBytes: 67108864

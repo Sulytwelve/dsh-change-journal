@@ -1,0 +1,7 @@
+{
+  "meta": {
+    "title": "Change journal",
+    "description": "Append-only journal for managed changes: one operation id carries intent, backup, mutation, verification and a rollback recipe. Query today's changes, one operation, or what is still unverified. Observational only — no execution, no approval intercept.",
+    "detail": "docs/DETAIL.md"
+  }
+}
